@@ -40,12 +40,14 @@ const ProductListScreen = ({ navigation }) => {
     <SafeAreaView className="flex-1 w-full px-4 bg-white">
       <ScrollView showsVerticalScrollIndicator={false}>
         {products?.map((product) => (
-          <Pressable key={product.id} onPress={() => navigation.navigate("detailscreen")}>
+          <Pressable key={product.id} onPress={() => navigation.navigate("detailscreen",{
+            productId:product?.id
+          })}>
             <ProductItem
-              title={product.title}
-              image={product.image}
-              price={product.price}
-              brand={product.brand}
+              title={product?.title}
+              image={product?.image}
+              price={product?.price}
+              brand={product?.brand}
             />
           </Pressable>
         ))}
