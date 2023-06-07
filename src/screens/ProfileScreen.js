@@ -1,9 +1,12 @@
 import { Text, View, Image,Pressable } from "react-native";
-import React from "react";
+import React, { useContext } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import User from "../../assets/user.png";
+import AuthContext from "../features/authContext";
 
 const ProfileScreen = () => {
+  const {currentUser} = useContext(AuthContext);
+
   return (
     <SafeAreaView className="bg-white h-full p-6 justify-between">
       <View>
@@ -13,17 +16,26 @@ const ProfileScreen = () => {
         </View>
       </View>
         <View className="mt-6">
+          {currentUser
+            ?
           <View className="items-center justify-center">
-            <Text className="text-lg font-bold">Anto Vimalan</Text>
-            <Text className="text-xs, font-bold text-gray-500">workshoplends8@gmail.com</Text>
+            <Text className="text-lg font-bold">{currentUser?.name}</Text>
+            <Text className="text-xs, font-bold text-gray-500">{currentUser?.email}</Text>
           </View>
+          :
+          <View className="items-center justify-center">
+            <Text className="text-lg font-bold">Login to view your Profile!</Text>
+          </View>
+          }
         </View>
         </View>
+        {currentUser &&
         <View className="justify-center items-center">
           <Pressable className="bg-black w-full py-4 rounded-lg">
             <Text className="font-bold text-white text-center">Log Out</Text>
           </Pressable>
         </View>
+        }
     </SafeAreaView>
   );
 };
