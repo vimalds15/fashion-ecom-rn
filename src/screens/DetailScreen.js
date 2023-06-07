@@ -1,16 +1,42 @@
 import { StyleSheet, Text, View, Pressable, Image } from "react-native";
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import DetailImage from "../../assets/detail.png";
+import { getProductById } from "../features/firebase/product";
+import ProductContext from "../features/productContext";
+import { ScrollView } from "react-native-gesture-handler";
 
-const sizes = ["S", "M", "L", "XL", "XXL"];
+// const sizes = ["S", "M", "L", "XL", "XXL"];
 
-const DetailScreen = ({navigation}) => {
-  
+const DetailScreen = ({navigation,route}) => {
+  const {currentProduct:product,setCurrentProduct}= useContext(ProductContext);
+  const id=route.params.productId;
+
+  const [qty,setQty]=useState(1);
+
+  const increment =()=>{
+    setQty(prev=>prev+1)
+  }
+  const decrement =()=>{
+    if(qty>1){
+      setQty(prev=>prev-1)
+    }
+  }
+
   const goBack =() => {
     navigation.goBack()
   }
+
+  const fetchProductById =async(id) =>{
+    
+    const result = await getProductById(id)
+    setCurrentProduct(result)
+  }
+
+  useEffect(()=>{
+    fetchProductById(id)
+  },[id])
 
   return (
     <View className="h-full bg-white">
@@ -18,29 +44,29 @@ const DetailScreen = ({navigation}) => {
         <Pressable onPress={goBack} className="mt-8 absolute z-10 top-4 justify-center items-center h-10 w-10 mx-4 rounded-full bg-black">
           <MaterialIcons name="chevron-left" size={34} color={"#fff"} />
         </Pressable>
-          <Image source={DetailImage} className="object-cover w-full" />
+          <Image source={{uri:product?.image}} style={{resizeMode:"cover"}} className=" h-[470]" />
       </View>
 
       <View className="rounded-[30px]  bg-white mt-[-20px] p-5">
         <View>
         <View className="flex-row justify-between">
             <View>
-                <Text className="font-extrabold text-lg">Roller Rabbit</Text>
-                <Text className="text-xs text-gray-500">Vado Odelle Dress</Text>
+                <Text className="font-extrabold text-lg">{product?.title}</Text>
+                <Text className="text-xs text-gray-500">{product?.brand}</Text>
             </View>
             <View>
-                <View className="flex-row px-3 py-1  justify-center items-center bg-gray-200 rounded-3xl">
-                <Pressable className="mr-4">
+                <View className="flex-row justify-center items-center">
+                <Pressable className="px-3 py-1 bg-gray-300 border border-gray-300 rounded-tl-lg rounded-bl-lg" onPress={decrement}>
                     <Text className="font-semibold">-</Text>
                 </Pressable>
-                <Text >1</Text>
-                <Pressable className="ml-4">
+                <Text className="bg-white px-2 py-1 border border-gray-300"  >{qty}</Text>
+                <Pressable className="px-3 py-1 bg-gray-300 border border-gray-300 rounded-tr-lg rounded-br-lg" onPress={increment}>
                     <Text>+</Text>
                 </Pressable>
                 </View>
             </View>
         </View>
-        <View className="mt-6">
+        {/* <View className="mt-6">
           <Text className="font-extrabold mb-3">Size</Text>
           <View className="flex-row justify-evenly">
           {sizes.map((size) => (
@@ -49,14 +75,14 @@ const DetailScreen = ({navigation}) => {
             </View>
           ))}
           </View>
-        </View>
+        </View> */}
         <View className="mt-6">
           <Text className="font-extrabold mb-3">Description</Text>
+          <ScrollView className="h-36">
           <Text className="text-gray-500 text-xs">
-            Get a little lift from these Sam Edelman sandals featuring ruched
-            straps and leather lace-up ties, while a braided jute sole makes a
-            fresh statement for summer
+            {product?.description}
           </Text>
+          </ScrollView>
         </View>
         </View>
       </View>
@@ -64,7 +90,7 @@ const DetailScreen = ({navigation}) => {
       <View className="flex-row justify-between items-center mt-8">
         <View >
           <Text className="text-gray-500 mb-[-4px]">Total Price</Text>
-          <Text className="font-bold text-lg">$198.00</Text>
+          <Text className="font-bold text-lg">${product?.price}</Text>
         </View>
         <Pressable className="items-center bg-black px-6 py-3 rounded-3xl">
           <Text className="text-white font-semibold">Add to Cart</Text>

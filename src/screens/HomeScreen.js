@@ -90,7 +90,7 @@ const Home = ({ navigation }) => {
             showsHorizontalScrollIndicator={false}
           >
             {products?.map(product=>
-            <Pressable key={product.id} onPress={() => navigation.navigate("detailscreen")}>
+            <Pressable key={product.id} onPress={() => navigation.navigate("detailscreen",{productId:product.id})}>
               <NewArrivalsCard title={product.title} image={product.image} price={product.price} brand={product.brand} />
             </Pressable>
               )}
