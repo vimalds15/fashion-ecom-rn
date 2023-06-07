@@ -8,15 +8,25 @@ import NewArrivalsCard from "../components/NewArrivalsCard";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AuthenticationModal from "../components/AuthenticationModal";
 import AuthContext from "../features/authContext";
+import ProductContext from "../features/productContext";
+import { getProducts } from "../features/firebase/product";
 
 const Home = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const { isLoggedIn,currentUser,setIsLoggedIn } = useContext(AuthContext);
+  const {products,setProducts} = useContext(ProductContext);
+
+  const fetchAllProducts = async () => {
+    const result = await getProducts()
+    setProducts(result)
+  }
 
   useEffect(() => {
     navigation.setOptions({
       headerShown: false,
     });
+
+    fetchAllProducts()
   }, []);
   return (
     <SafeAreaView className="flex-1 bg-white">
@@ -79,14 +89,12 @@ const Home = ({ navigation }) => {
             horizontal={true}
             showsHorizontalScrollIndicator={false}
           >
-            <Pressable onPress={() => navigation.navigate("detailscreen")}>
-              <NewArrivalsCard />
+            {products?.map(product=>
+            <Pressable key={product.id} onPress={() => navigation.navigate("detailscreen")}>
+              <NewArrivalsCard title={product.title} image={product.image} price={product.price} brand={product.brand} />
             </Pressable>
-            <NewArrivalsCard />
-            <NewArrivalsCard />
-            <NewArrivalsCard />
-            <NewArrivalsCard />
-            <NewArrivalsCard />
+              )}
+            
           </ScrollView>
         </View>
         <AuthenticationModal
