@@ -11,7 +11,7 @@ export const getCartItems = () => {
     return data;
 }}
 
-export const addToCart=async(itemId)=>{
+export const addToCart=async(itemId,qty)=>{
     const productRef = doc(db,"products",itemId)
     const userDocRef = doc(db,"users",auth.currentUser.uid)
     const productSnapshot = await getDoc(productRef)
@@ -20,7 +20,7 @@ export const addToCart=async(itemId)=>{
         const userData = userDocSnapshot.data();
         const productData = productSnapshot.data();
         const cartItems = userData.cart || [];
-        cartItems.push(productData)
+        cartItems.push({productData,qty})
         await updateDoc(userDocRef,{cart:cartItems})
         console.log("items added to cart")
         return {success:true}
