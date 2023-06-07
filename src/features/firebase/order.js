@@ -15,7 +15,9 @@ export const addToOrders = async () => {
                 id:item.id,
                 image:item.image,
                 title:item.title,
+                brand:item.brand,
                 price:item.price,
+                qty:item.qty,
                 date: new Date().toLocaleString()
             })
         })
@@ -23,4 +25,11 @@ export const addToOrders = async () => {
         console.log("items added to order")
         return {success:true}
     }
+}
+
+export const getAllOrderItems = async ()=>{
+    const userRef=doc(db,"users",auth.currentUser.uid)
+    const userDocSnapshot = await getDoc(userRef)
+    const data = userDocSnapshot.data().orders;
+    return {success:true,data}
 }

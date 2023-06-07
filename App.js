@@ -6,13 +6,15 @@ import { useState } from "react";
 import { AuthProvider } from "./src/features/authContext";
 import { ProductProvider } from "./src/features/productContext";
 import { CartProvider } from "./src/features/cartContext";
+import { OrderProvider } from "./src/features/orderContext";
 
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
   const [products, setProducts] = useState(null);
   const [currentProduct, setCurrentProduct] = useState(null);
-  const [cartItems,setCartItems]=useState(null)
+  const [cartItems, setCartItems] = useState(null);
+  const [orders, setOrders] = useState(null);
 
   return (
     <AuthProvider
@@ -21,12 +23,12 @@ export default function App() {
       <ProductProvider
         value={{ products, setProducts, currentProduct, setCurrentProduct }}
       >
-        <CartProvider
-          value={{cartItems,setCartItems}}
-        >
-          <NavigationContainer>
-            <TabNavigator />
-          </NavigationContainer>
+        <CartProvider value={{ cartItems, setCartItems }}>
+          <OrderProvider value={{ orders, setOrders }}>
+            <NavigationContainer>
+              <TabNavigator />
+            </NavigationContainer>
+          </OrderProvider>
         </CartProvider>
       </ProductProvider>
     </AuthProvider>
