@@ -35,8 +35,9 @@ const loginWithEmailAndPassword = async(email,password) => {
     }
 }
 
-const logout = () => {
-    signOut(auth);
+const logout = async () => {
+    await signOut(auth);
+    return {success:true}
 }
 
 export {loginWithEmailAndPassword,logout,registerWithEmailAndPassword};

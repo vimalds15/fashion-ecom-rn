@@ -1,11 +1,19 @@
-import { Text, View, Image,Pressable } from "react-native";
+import { Text, View, Image,Pressable,ToastAndroid } from "react-native";
 import React, { useContext } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import User from "../../assets/user.png";
 import AuthContext from "../features/authContext";
+import { logout } from "../features/firebase/userAuth";
 
 const ProfileScreen = () => {
   const {currentUser} = useContext(AuthContext);
+
+  const handleLogout = async () => {
+    const res = await logout()
+    if(res.success===true){
+      ToastAndroid.show("Logged Out Successfully",ToastAndroid.BOTTOM)
+    }
+  }
 
   return (
     <SafeAreaView className="bg-white h-full p-6 justify-between">
@@ -31,7 +39,7 @@ const ProfileScreen = () => {
         </View>
         {currentUser &&
         <View className="justify-center items-center">
-          <Pressable className="bg-black w-full py-4 rounded-lg">
+          <Pressable onPress={handleLogout} className="bg-black w-full py-4 rounded-lg">
             <Text className="font-bold text-white text-center">Log Out</Text>
           </Pressable>
         </View>
