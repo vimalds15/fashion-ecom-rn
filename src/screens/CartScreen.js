@@ -1,20 +1,37 @@
-import { StyleSheet, Text, View, Image,ScrollView,Pressable } from "react-native";
-import React, { useEffect } from "react";
-import { TextInput } from "react-native-gesture-handler";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import UserLogo from "../../assets/user.png";
-import OfferCard from "../components/OfferCard";
-import NewArrivalsCard from "../components/NewArrivalsCard";
+import { Text, View, ScrollView } from "react-native";
+import React, { useContext, useEffect,useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CartItem from "../components/CartItem";
 import TotalSummaryCard from "../components/TotalSummaryCard";
+import CartContext from "../features/cartContext";
+import { getCartItems } from "../features/firebase/cart";
+import AuthContext from "../features/authContext";
 
 const Cart = ({ navigation }) => {
+  const [total,setTotal] = useState()
+  const {currentUser} = useContext(AuthContext)
+  const {cartItems,setCartItems}=useContext(CartContext)
+
+  const calculateTotalAmount = async(data) => {
+    const subTotal = await data.reduce((acc,item)=>acc+Number(item.price),0)
+    setTotal(subTotal.toFixed(2))
+  }
+
+  const fetchCartItems =async ()=>{
+    const res = await getCartItems()
+    if(res.success===true){
+      setCartItems(res.data)
+      setTotal(res.subTotal)
+      calculateTotalAmount(res.data)
+    }
+  }
+
   useEffect(() => {
     navigation.setOptions({
       headerShown: false,
     });
-  }, []);
+    fetchCartItems()
+  }, [currentUser,cartItems?.length]);
   return (
     <SafeAreaView className="flex-1 w-full p-5 bg-white">
       <View>
@@ -22,14 +39,13 @@ const Cart = ({ navigation }) => {
       </View>
 
         <ScrollView className="mt-4 " showsVerticalScrollIndicator={false}>
-          <CartItem />
-          <CartItem />
-          <CartItem />
-          <CartItem />
+          {cartItems?.map(item => 
+            <CartItem key={item.id} id={item.id} title={item.title} brand={item.brand} qty={item.qty} image={item.image} price={item.price} />
+          )}
         </ScrollView>
 
         <View>
-            <TotalSummaryCard />
+            <TotalSummaryCard totalPrice={total} />
         </View>
     
     </SafeAreaView>

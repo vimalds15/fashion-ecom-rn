@@ -14,13 +14,12 @@ import AuthContext from "../features/authContext";
 import Logo from "../../assets/logo.png";
 import { loginWithEmailAndPassword, registerWithEmailAndPassword } from "../features/firebase/userAuth";
 
-const dimensions = Dimensions.get("window").width;
 
 const AuthenticationModal = ({ modalVisible, setModalVisible }) => {
   const [type, setType] = useState("login");
   const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("test@test.com");
+  const [password, setPassword] = useState("123456");
   const [loading,setLoading] = useState(false)
 
   const { currentUser, setCurrentUser, isLoggedIn, setIsLoggedIn } =
