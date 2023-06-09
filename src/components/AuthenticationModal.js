@@ -25,8 +25,6 @@ const AuthenticationModal = ({ modalVisible, setModalVisible }) => {
   const { currentUser, setCurrentUser, isLoggedIn, setIsLoggedIn } =
     useContext(AuthContext);
 
-  console.log("first", isLoggedIn);
-
   const handleLogin = async() => {
     setLoading(true)
     const res= await loginWithEmailAndPassword(email,password)
@@ -35,6 +33,7 @@ const AuthenticationModal = ({ modalVisible, setModalVisible }) => {
       setCurrentUser(res.user)
       setModalVisible(false);
       setIsLoggedIn(true)
+      setLoading(false)
     }
     setModalVisible(false);
   };
@@ -47,17 +46,13 @@ const AuthenticationModal = ({ modalVisible, setModalVisible }) => {
         setCurrentUser({name,password})
         setModalVisible(false);
         setIsLoggedIn(true)
+        setLoading(false)
       }
       setLoading(false)
   };
 
-  const handleLogout = () => {
-    setModalVisible(false);
-    setIsLoggedIn(false);
-  };
 
   useEffect(() => {
-    console.log("first");
     if (currentUser) {
       setIsLoggedIn(true);
     }
@@ -73,22 +68,8 @@ const AuthenticationModal = ({ modalVisible, setModalVisible }) => {
           setModalVisible(false);
         }}
       >
-        {isLoggedIn ? (
-          <View className="flex-1 justify-center items-center bg-black/[0.5]">
-            <View>
-              <Text className="text-center">Are you sure? </Text>
-              <TouchableOpacity
-                className="bg-black py-4 mt-4 rounded-lg"
-                onPress={handleLogout}
-              >
-                <Text className="text-white font-semibold text-center">
-                  Logout
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        ) : type === "login" ? (
-          <View className="flex-1 justify-center items-center bg-black/[0.5]">
+        {type === "login" ? (
+          <Pressable onPress={()=>setModalVisible(false)} className="flex-1 justify-center items-center bg-black/[0.5]">
             <View className={`w-[80%] p-6 bg-white rounded-lg z-10`}>
               <Text className="font-bold mb-2">Email:</Text>
               <TextInput
@@ -123,11 +104,11 @@ const AuthenticationModal = ({ modalVisible, setModalVisible }) => {
                 &&
                 <ActivityIndicator />
               }
-              {/* {error && <Text style={{color:"red"}}>{error}</Text>} */}
+              
             </View>
-          </View>
+          </Pressable>
         ) : (
-          <View className="flex-1 justify-center items-center bg-black/[0.5]">
+          <Pressable onPress={()=>setModalVisible(false)} className="flex-1 justify-center items-center bg-black/[0.5]">
             <View className={`w-[80%] p-6 bg-white`}>
               <Text className="font-bold mb-2">Name:</Text>
               <TextInput
@@ -172,7 +153,7 @@ const AuthenticationModal = ({ modalVisible, setModalVisible }) => {
               }
               {error && <Text style={{color:"red"}}>{error}</Text>} */}
             </View>
-          </View>
+          </Pressable>
         )}
       </Modal>
     </View>

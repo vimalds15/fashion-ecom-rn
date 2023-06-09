@@ -6,12 +6,14 @@ import AuthContext from "../features/authContext";
 import { logout } from "../features/firebase/userAuth";
 
 const ProfileScreen = () => {
-  const {currentUser} = useContext(AuthContext);
+  
+  const {currentUser,isLoggedIn,setIsLoggedIn} = useContext(AuthContext);
 
   const handleLogout = async () => {
     const res = await logout()
     if(res.success===true){
       ToastAndroid.show("Logged Out Successfully",ToastAndroid.BOTTOM)
+      setIsLoggedIn(false);
     }
   }
 
@@ -24,7 +26,7 @@ const ProfileScreen = () => {
         </View>
       </View>
         <View className="mt-6">
-          {currentUser
+          {isLoggedIn
             ?
           <View className="items-center justify-center">
             <Text className="text-lg font-bold">{currentUser?.name}</Text>
@@ -37,7 +39,7 @@ const ProfileScreen = () => {
           }
         </View>
         </View>
-        {currentUser &&
+        {isLoggedIn &&
         <View className="justify-center items-center">
           <Pressable onPress={handleLogout} className="bg-black w-full py-4 rounded-lg">
             <Text className="font-bold text-white text-center">Log Out</Text>
