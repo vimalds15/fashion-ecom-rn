@@ -1,6 +1,6 @@
 import {auth,db} from "../../../firebase"
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth"
-import { query,getDocs,collection,where,addDoc, getDoc, doc, setDoc} from "firebase/firestore"
+import { getDoc, doc, setDoc} from "firebase/firestore"
 
 
 const registerWithEmailAndPassword = async(name,email,password) => {

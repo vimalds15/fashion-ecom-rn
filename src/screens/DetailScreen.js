@@ -50,7 +50,8 @@ const DetailScreen = ({navigation,route}) => {
   return (
     <SafeAreaView className="h-full bg-white">
       <View className=" bg-black w-full">
-        <Pressable onPress={goBack} className="mt-2 absolute z-10 top-4 justify-center items-center h-10 w-10 mx-4 rounded-full bg-black">
+        <Pressable onPress={goBack} className="mt-2 absolute z-10 top-4 justify-center items-center
+         h-10 w-10 mx-4 rounded-full bg-black">
           <MaterialIcons name="chevron-left" size={34} color={"#fff"} />
         </Pressable>
           <Image source={{uri:product?.image}} style={{resizeMode:"cover"}} className=" h-[470]" />
@@ -65,7 +66,8 @@ const DetailScreen = ({navigation,route}) => {
             </View>
             <View>
                 <View className="flex-row justify-center items-center">
-                <Pressable className="px-3 py-1 bg-gray-300 border border-gray-300 rounded-tl-lg rounded-bl-lg" onPress={decrement}>
+                <Pressable className="px-3 py-1 bg-gray-300 border border-gray-300 rounded-tl-lg
+                 rounded-bl-lg" onPress={decrement}>
                     <Text className="font-semibold">-</Text>
                 </Pressable>
                 <Text className="bg-white px-2 py-1 border border-gray-300"  >{qty}</Text>

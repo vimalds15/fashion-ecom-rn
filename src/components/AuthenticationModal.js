@@ -43,7 +43,7 @@ const AuthenticationModal = ({ modalVisible, setModalVisible }) => {
       setLoading(true)
       const res = await registerWithEmailAndPassword(name,email,password)
       if(res.success===true){
-        setCurrentUser({name,password})
+        setCurrentUser({name,email})
         setModalVisible(false);
         setIsLoggedIn(true)
         setLoading(false)
