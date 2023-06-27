@@ -4,7 +4,8 @@ import React from "react";
 const OrderItem = ({orderId,title,image,brand,date,price,qty}) => {
   return (
 
-    <View  className="bg-white justify-center items-center rounded-lg w-full mb-2 border border-slate-200" >
+    <View  className="bg-white justify-center items-center rounded-lg w-full
+     mb-2 border border-slate-200" >
     <View className="flex-row justify-center items-center">
       <View className="p-2 items-center justify-center">
         <Image source={{uri:image}} className="rounded-xl h-24 w-24 object-contain" />

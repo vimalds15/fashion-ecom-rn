@@ -14,7 +14,7 @@ const Cart = ({ navigation }) => {
 
   const calculateTotalAmount = async (data) => {
     const subTotal = await data.reduce(
-      (acc, item) => acc + Number(item.price),
+      (acc, item) => acc + (Number(item.price)*Number(item.qty)),
       0
     );
     setTotal(subTotal.toFixed(2));
